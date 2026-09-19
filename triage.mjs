@@ -55,7 +55,8 @@ for (const e of emails) {
   });
 }
 
-await writeFile(file.replace(/\.json$/, ".triage.json"), JSON.stringify(out, null, 2));
+// ponytail: a --limit run must not clobber the full output file
+if (limit === Infinity) await writeFile(file.replace(/\.json$/, ".triage.json"), JSON.stringify(out, null, 2));
 const f = (n) => (n == null ? "  -  " : n.toFixed(2));
 console.log("imp  conf  scam  deal  category           date        from                          subject");
 for (const r of [...out].sort((x, y) => y.importance - x.importance))
