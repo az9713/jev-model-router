@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:3000/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Jev Router</title>
+<style>
+  :root { --bg:#0f172a; --card:#1e293b; --text:#e2e8f0; --muted:#94a3b8; --accent:#fb923c; --accent2:#2dd4bf; --border:#334155; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 system-ui, sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:24px 16px 120px; }
+  h1 { font-size:18px; margin:0 0 16px; color:var(--accent2); }
+  .turn { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin-bottom:14px; }
+  .q { color:var(--muted); white-space:pre-wrap; margin-bottom:10px; }
+  .meta { display:flex; flex-wrap:wrap; gap:8px 16px; font-size:13px; color:var(--muted); margin-bottom:10px; align-items:center; }
+  .tier { background:var(--accent); color:#0f172a; font-weight:700; padding:2px 10px; border-radius:999px; text-transform:uppercase; font-size:12px; }
+  .bars { display:grid; grid-template-columns:80px 1fr 48px; gap:4px 8px; font-size:12px; margin-bottom:10px; }
+  .bar { background:#0f172a; border-radius:4px; overflow:hidden; height:14px; }
+  .bar i { display:block; height:100%; background:var(--accent2); }
+  .reply { white-space:pre-wrap; border-top:1px solid var(--border); padding-top:10px; }
+  form { position:fixed; left:0; right:0; bottom:0; background:var(--bg); border-top:1px solid var(--border); padding:12px 16px; }
+  .row { max-width:760px; margin:0 auto; display:flex; gap:8px; }
+  textarea { flex:1; background:var(--card); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:10px; font:inherit; resize:vertical; min-height:44px; }
+  button { background:var(--accent2); color:#0f172a; border:0; border-radius:8px; padding:0 18px; font-weight:700; cursor:pointer; }
+  button:disabled { opacity:.5; cursor:wait; }
+  .err { color:#f87171; }
+</style>
+<style id="_goober"> .go1475592160{height:0;}.go1671063245{height:auto;}.go1888806478{display:flex;flex-wrap:wrap;flex-grow:1;}@media (min-width:600px){.go1888806478{flex-grow:initial;min-width:288px;}}.go167266335{background-color:#313131;font-size:0.875rem;line-height:1.43;letter-spacing:0.01071em;color:#fff;align-items:center;padding:6px 16px;border-radius:4px;box-shadow:0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12);}.go3162094071{padding-left:20px;}.go3844575157{background-color:#313131;}.go1725278324{background-color:#43a047;}.go3651055292{background-color:#d32f2f;}.go4215275574{background-color:#ff9800;}.go1930647212{background-color:#2196f3;}.go946087465{display:flex;align-items:center;padding:8px 0;}.go703367398{display:flex;align-items:center;margin-left:auto;padding-left:16px;margin-right:-8px;}.go3963613292{width:100%;position:relative;transform:translateX(0);top:0;right:0;bottom:0;left:0;min-width:288px;}.go1141946668{box-sizing:border-box;display:flex;max-height:100%;position:fixed;z-index:1400;height:auto;width:auto;transition:top 300ms ease 0ms,right 300ms ease 0ms,bottom 300ms ease 0ms,left 300ms ease 0ms,max-width 300ms ease 0ms;pointer-events:none;max-width:calc(100% - 40px);}.go1141946668 .notistack-CollapseWrapper{padding:6px 0px;transition:padding 300ms ease 0ms;}@media (max-width:599.95px){.go1141946668{width:100%;max-width:calc(100% - 32px);}}.go3868796639 .notistack-CollapseWrapper{padding:2px 0px;}.go3118922589{top:14px;flex-direction:column;}.go1453831412{bottom:14px;flex-direction:column-reverse;}.go4027089540{left:20px;}@media (min-width:600px){.go4027089540{align-items:flex-start;}}@media (max-width:599.95px){.go4027089540{left:16px;}}.go2989568495{right:20px;}@media (min-width:600px){.go2989568495{align-items:flex-end;}}@media (max-width:599.95px){.go2989568495{right:16px;}}.go4034260886{left:50%;transform:translateX(-50%);}@media (min-width:600px){.go4034260886{align-items:center;}}</style><style>form{display:none}</style></head>
+<body>
+<main><div style="background:#1e293b;border:1px solid #fb923c;border-radius:8px;padding:10px 14px;margin-bottom:16px;color:#cbd5e1">Frozen demo: a saved copy of the router page after three messages. The Send box is disabled here. Run it live with <code>node --env-file=.env server.mjs</code> from the <a href="https://github.com/az9713/jev-model-router" style="color:#2dd4bf">repo</a>. <a href="./" style="color:#2dd4bf">Development journey</a>.</div>
+  <h1>Jev model router</h1>
+  <div id="log"><div class="turn"><div class="q">hi there, how are you</div>
+      <div class="meta"><span class="tier">nano</span><span>openai/gpt-5-nano</span><span>confidence 1</span><span>Jev 705 ms</span><span>reply 2961 ms</span></div>
+      <div class="bars"><span>balanced</span><div class="bar"><i style="width:0%"></i></div><span>0%</span><span>fast</span><div class="bar"><i style="width:0%"></i></div><span>0%</span><span>nano</span><div class="bar"><i style="width:100%"></i></div><span>100%</span><span>frontier</span><div class="bar"><i style="width:0%"></i></div><span>0%</span></div><div class="reply">Hi there! I'm here and ready to help. How can I assist you today?</div></div><div class="turn"><div class="q">tell me the best way to build an app to track my diet using AI</div>
+      <div class="meta"><span class="tier">balanced</span><span>anthropic/claude-sonnet-5</span><span>confidence 0.94</span><span>Jev 541 ms</span><span>reply 12532 ms</span></div>
+      <div class="bars"><span>frontier</span><div class="bar"><i style="width:0%"></i></div><span>0%</span><span>nano</span><div class="bar"><i style="width:0%"></i></div><span>0%</span><span>balanced</span><div class="bar"><i style="width:95%"></i></div><span>95%</span><span>fast</span><div class="bar"><i style="width:5%"></i></div><span>5%</span></div><div class="reply"># Building an AI Diet Tracking App
+
+Here's a practical approach broken into decisions you'll need to make:
+
+## 1. Define Core Features First
+- **Food logging method**: Photo recognition, text/voice input, or barcode scanning?
+- **Tracking scope**: Calories only, or full macros/micros?
+- **AI's role**: Just food identification, or also meal suggestions/coaching?
+
+## 2. Tech Stack Options
+
+**Fastest path (recommended for MVP):**
+- **Frontend**: React Native or Flutter (cross-platform mobile)
+- **Backend**: Node.js/Python (FastAPI) + PostgreSQL
+- **AI/Food Recognition**: 
+  - Use existing APIs instead of training your own model: **Google Vision API**, **LogMeal**, or **Foodvisor API**
+  - For nutrition data: **USDA FoodData Central** (free) or **Nutritionix API**
+
+**Build from scratch (more control, more work):**
+- Fine-tune a vision model (like CLIP or a custom CNN) on food datasets (Food-101, Nutrition5k)
+- Requires more ML expertise and data pipeline work
+
+## 3. Recommended Architecture for MVP
+
+```
+User takes photo → 
+Image sent to Vision API (food identification) → 
+Match against nutrition database → 
+User confirms/adjusts portion → 
+Log saved with macros/calories → 
+Display in dashboard/history
+```
+
+## 4. AI Features Worth Adding (in priority order)
+
+1. **Photo-to-food recognition** (highest value, use existing API)
+2. **Natural language logging** ("I had a chicken salad") using GPT-4o/Claude API to parse into structured nutrition data
+3. **Portion size estimation** from photos (harder, less accurate—consider skipping initially)
+4. **Personalized insights** ("You're consistently low on protein") using simple rule-based logic before jumping to ML
+5. **Conversational coaching** via LLM API for suggestions
+
+## 5. Practical Build Order
+
+1. Start with **manual + voice/text logging** using an LLM to parse free text into structured data (this alone is huge UX improvement over typical apps)
+2. Add **barcode scanning** (Open Food Facts API is free)
+3. Add **photo recognition** last—it's the most complex and least accurate feature
+4. Layer in analytics/insights once you have data flowing
+
+## 6. Cost-Conscious Tips
+- Don't train your own food recognition model initially—existing APIs are good enough and save months
+- Cache nutrition lookups to reduce API calls
+- Use GPT-4o-mini or Claude Haiku for text parsing (cheap, fast, accurate enough)
+
+---
+
+**Quick question to narrow this down further:** Are you building this for personal use/learning, or planning to ship it to other users? That changes how much I'd emphasize scalability, auth, and data privacy from the start.</div></div><div class="turn"><div class="q">Please build this tracker app for me.</div>
+      <div class="meta"><span class="tier">balanced</span><span>anthropic/claude-sonnet-5</span><span>confidence 0.73</span><span>Jev 436 ms</span><span>reply 8197 ms</span></div>
+      <div class="bars"><span>fast</span><div class="bar"><i style="width:1%"></i></div><span>1%</span><span>balanced</span><div class="bar"><i style="width:80%"></i></div><span>80%</span><span>frontier</span><div class="bar"><i style="width:19%"></i></div><span>19%</span><span>nano</span><div class="bar"><i style="width:0%"></i></div><span>0%</span></div><div class="reply"># Tracker App
+
+I'd be happy to help you build a tracker app! However, I need more details to create exactly what you need. Trackers can vary widely, so let me ask some clarifying questions:
+
+## What are you tracking?
+- [ ] Habits/daily goals
+- [ ] Expenses/budget
+- [ ] Fitness/workouts
+- [ ] Tasks/to-dos
+- [ ] Time (time tracking for work/projects)
+- [ ] Mood/health symptoms
+- [ ] Something else (please describe)
+
+## Platform
+- Web app (browser-based)
+- Mobile app (iOS/Android)
+- Desktop app
+- Simple script/CLI tool
+
+## Key Features (examples)
+- Add/edit/delete entries
+- Categories or tags
+- Daily/weekly/monthly views
+- Charts or statistics
+- Reminders/notifications
+- Data export (CSV, etc.)
+- Multi-user support / login
+- Offline support
+
+## Tech Preferences
+- Any specific language/framework? (e.g., React, Python, plain HTML/JS)
+- Should data be saved locally (browser storage/file) or in a database?
+- Any design style you like (minimal, colorful, dark mode, etc.)?
+
+---
+
+### If you want to get started quickly:
+Tell me just **one sentence** like:
+&gt; "A habit tracker web app where I can check off daily habits and see my streak, using HTML/CSS/JS with local storage."
+
+...and I'll build the whole thing right away with sensible defaults. The most default choice would be:
+
+**A simple, clean web-based Habit Tracker** — add habits, check them off each day, see streaks, stores data in browser local storage, no login required, works instantly in browser.
+
+Want me to just build that default version now? Or tell me your specific idea and I'll build that instead!</div></div></div>
+</main>
+<form id="f">
+  <div class="row">
+    <textarea id="m" placeholder="Type a message. Jev picks the tier, then that model answers." required=""></textarea>
+    <button id="b">Send</button>
+  </div>
+</form>
+<script>
+const log = document.getElementById("log"), f = document.getElementById("f"), m = document.getElementById("m"), b = document.getElementById("b");
+const esc = s => s.replace(/[&<>]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;" }[c]));
+f.onsubmit = async e => {
+  e.preventDefault();
+  const message = m.value.trim(); if (!message) return;
+  b.disabled = true;
+  const el = document.createElement("div"); el.className = "turn";
+  el.innerHTML = `<div class="q">${esc(message)}</div><div class="meta">Asking Jev…</div>`;
+  log.append(el); el.scrollIntoView();
+  try {
+    const r = await (await fetch("/chat", { method: "POST", body: JSON.stringify({ message }) })).json();
+    if (r.error) throw new Error(r.error);
+    const bars = Object.entries(r.probabilities).map(([k, p]) =>
+      `<span>${k}</span><div class="bar"><i style="width:${Math.round(p*100)}%"></i></div><span>${Math.round(p*100)}%</span>`).join("");
+    el.innerHTML = `<div class="q">${esc(message)}</div>
+      <div class="meta"><span class="tier">${r.tier}</span><span>${r.model}</span><span>confidence ${r.confidence}</span><span>Jev ${r.jevMs} ms</span><span>reply ${r.replyMs} ms</span></div>
+      <div class="bars">${bars}</div><div class="reply">${r.replyError ? `<span class="err">${esc(r.model)} refused: ${esc(r.replyError)}</span>` : esc(r.reply)}</div>`;
+    m.value = "";
+  } catch (err) { el.querySelector(".meta").innerHTML = `<span class="err">${esc(err.message)}</span>`; }
+  b.disabled = false; m.focus();
+};
+m.onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); f.requestSubmit(); } };
+</script>
+
+
+<a id="bottomBar" style="position: fixed; bottom: -40px; left: 0px; z-index: 9999; transform: translateX(-50%); background-color: transparent; border-radius: 5px 5px 0px 0px; opacity: 0.3; padding: 5px; transition: 0.3s; cursor: pointer; max-height: 100px; max-width: 45px;"><img src="chrome-extension://kobncfkmjelbefaoohoblamnbackjggk/icon/icon_32.png" style="width: 32px; height: 32px;"></a></body></html>
