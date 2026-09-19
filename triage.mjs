@@ -8,22 +8,22 @@ const JEV = "typesafe-ai/jev";
 const QUESTIONS = {
   category: {
     type: "choice",
-    instructions: "What kind of email is this, received by Simon?",
+    instructions: "What kind of email is this, received by the user?",
     criteria: {
-      security_alert: "An account security or sign-in notice from a service Simon uses",
+      security_alert: "An account security or sign-in notice from a service the user uses",
       receipt: "A payment receipt, invoice, or billing notice",
-      service_notice: "A product, policy, or terms change from a service Simon uses",
+      service_notice: "A product, policy, or terms change from a service the user uses",
       newsletter: "A digest, marketing, or promotional mailing",
-      personal_reminder: "A reminder or task sent by Simon or a family member to Simon",
-      business_inquiry: "A person or company asking Simon for work, a contract, or a deal",
+      personal_reminder: "A reminder or task sent by the user or a family member to the user",
+      business_inquiry: "A person or company asking the user for work, a contract, or a deal",
       other: "None of the above",
     },
   },
   importance: {
     type: "score",
-    instructions: "How important is it that Simon personally reads this email?",
+    instructions: "How important is it that the user personally reads this email?",
     criteria: [
-      "ignore: no action and no information Simon needs",
+      "ignore: no action and no information the user needs",
       "low: informational only; fine to skim later",
       "medium: worth reading this week",
       "high: needs an action or a reply within a few days",
@@ -31,7 +31,7 @@ const QUESTIONS = {
       "insane: needs a response within 30 minutes or bad things happen",
     ],
   },
-  brand_deal: { type: "boolean", instructions: "Does this email mention a sponsorship or brand deal opportunity for Simon?" },
+  brand_deal: { type: "boolean", instructions: "Does this email mention a sponsorship or brand deal opportunity for the user?" },
   scam: { type: "boolean", instructions: "Does this email look like a scam, phishing, or something untrustworthy?" },
 };
 
