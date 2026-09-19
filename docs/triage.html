@@ -176,7 +176,7 @@
   <li>The state object, serialized. The key names <code>from</code>, <code>subject</code>, <code>date</code>, <code>snippet</code> are input. Rename <code>snippet</code> to <code>body</code> and the answers can shift.</li>
   <li>For the choice: the instruction, the seven option names, and the seven rubric strings. The option name is input. <code>security_alert</code> as a word helps Jev match an email whose subject is "Security alert".</li>
   <li>For the score: the instruction and the six level strings, in order. The level label is part of the string, so Jev reads "critical: needs an action today; …" as one sentence. The number 4 is what comes back.</li>
-  <li>For each boolean: the instruction only. No criteria map was given. The direct API's Noul takes an optional <code>{ true: …, false: … }</code> map; the gateway's boolean accepted the question without one.</li>
+  <li>For each boolean: the instruction only. No criteria map was given. The direct API's Noul takes a <code>{ true: …, false: … }</code> map; the gateway's boolean accepted the question without one.</li>
 </ul>
 <h3>What never reaches Jev</h3>
 <ul>
@@ -874,7 +874,7 @@ for (const r of [...out].sort((x, y) =&gt; y.importance - x.importance))
   <tr><td>Market cost, whole session</td><td>about $0.00125</td><td>42 × the figure above; per-call cost varies with snippet length</td></tr>
   <tr><td>Handoff's estimate</td><td>$0.02 per 500, so $0.00004 per email</td><td><code>HANDOFF.md</code>, previous session</td></tr>
   <tr><td>Provider time, first call</td><td>166 ms</td><td><code>endTime − startTime</code></td></tr>
-  <tr><td>Wall clock, 41 calls sequential</td><td>under 60 seconds; not timed</td><td>The Bash tool's default 120-second timeout was not reached</td></tr>
+  <tr><td>Wall clock, 41 calls sequential</td><td>not timed</td><td>The call returned inside its 300-second timeout</td></tr>
   <tr><td>Rate limits hit</td><td>None</td><td>Paid tier; no 429 in 42 calls</td></tr>
 </table>
 
@@ -946,7 +946,7 @@ for (const r of [...out].sort((x, y) =&gt; y.importance - x.importance))
 <ul>
   <li>The transcription of <code>emails.json</code> against the tool result, character by character.</li>
   <li>Any answer against the full email body. No body was fetched.</li>
-  <li>Whether a rerun gives the same numbers. Jev is stateless and the docs describe it as deterministic for the same input, but no second run was made.</li>
+  <li>Whether a rerun gives the same numbers. No second run was made.</li>
   <li>The meaning of <code>cost: "0"</code> on a paid account.</li>
   <li>The test file proposed to the user in the "how can I test" answer (a fake sponsorship, a fake phishing mail, a reminder, a newsletter). Described, not created, not run.</li>
 </ul>
@@ -971,7 +971,7 @@ for (const r of [...out].sort((x, y) =&gt; y.importance - x.importance))
   <tr><td>Jev saw your name in the criteria and knows you.</td><td>"Simon" in the instructions is a word. It links to nothing in the state.</td><td>Names in instructions do no harm and no work. The state must carry the identity signal.</td></tr>
   <tr><td>The JSON in the repo is the data.</td><td>The data files are under <code>.ignore/</code>, listed in <code>.gitignore</code>, and unredacted. This page holds a redacted copy. Only the redacted copy is public.</td><td>Keep inbox data out of the tree. Check <code>git status</code> before every push.</td></tr>
   <tr><td><code>cost: "0"</code> means free.</td><td>On a paid account the gateway still printed <code>cost: "0"</code> next to <code>marketCost: "0.000029778"</code>. The reason is not in any page read.</td><td>Bill by <code>marketCost</code> until the credits endpoint or the pricing page says otherwise.</td></tr>
-  <tr><td>Jev ran over the inbox in real time.</td><td>It ran over a file typed by the agent from one tool result, 15 minutes after the fetch. New mail after the fetch is not in it.</td><td>Refetch before every run. Treat the JSON as a snapshot with a date.</td></tr>
+  <tr><td>Jev ran over the inbox in real time.</td><td>It ran over a file typed by the agent from one tool result, later in the same session. New mail after the fetch is not in it.</td><td>Refetch before every run. Treat the JSON as a snapshot with a date.</td></tr>
 </table>
 
 <h2 id="s12">12. Where things stand</h2>
