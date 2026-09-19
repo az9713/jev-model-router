@@ -38,12 +38,12 @@
 <h1>Development Journey — Email Triage with Jev over 90 days of Gmail</h1>
 <div class="meta">
   <b>Date:</b> 2026-09-19 (session ran 2026-09-18 evening into 2026-09-19) &nbsp;·&nbsp; <b>Deliverable:</b> <code>triage.mjs</code> in this repo, plus two data files under <code>.ignore/</code> that are not in the repo &nbsp;·&nbsp; <b>Session:</b> one Claude Code session, model Fable 5.1, resumed from <code>HANDOFF.md</code> after <code>/clear</code><br>
-  <b>Brief:</b> the handoff said "Email triage with the Gmail MCP: one Jev request per email, four questions (category choice, importance score, brand-deal boolean, scam boolean). Cost ≈ $0.02 for 500 emails. Ask Simon which label/date range first." The user answered: "1 INBOX 2 last 90 days".<br>
+  <b>Brief:</b> the handoff said "Email triage with the Gmail MCP: one Jev request per email, four questions (category choice, importance score, brand-deal boolean, scam boolean). Cost ≈ $0.02 for 500 emails. Ask [name] which label/date range first." The user answered: "1 INBOX 2 last 90 days".<br>
   <b>Predecessor:</b> <a href="index.html">the model-router journey</a>, same repo, one day earlier.
 </div>
 
 <div class="callout warn">
-  <b>What this page shows and hides.</b> The 41 emails below are the user's real inbox. Before publication, these strings were replaced across the whole page: three email addresses (now <code>you@gmail</code>, <code>you@yahoo</code>, <code>you@hotmail</code>), one bank name (now "Bank"), one agency name (now "[redacted]"), one Google Cloud billing account number (now "[redacted]"), and four Google Cloud payment amounts (now "$[redacted]"). A build script did the replacement and refused to write the page if any original string survived. The files on disk under <code>.ignore/</code> are unredacted, untracked, and listed in <code>.gitignore</code>. The Jev numbers are unchanged. Jev saw the unredacted text.
+  <b>What this page shows and hides.</b> The 41 emails below are the user's real inbox. Before publication, these strings were replaced across the whole page: three email addresses (now <code>you@gmail</code>, <code>you@yahoo</code>, <code>you@hotmail</code>), one bank name (now "Bank"), one agency name (now "[redacted]"), one Google Cloud billing account number (now "[redacted]"), four Google Cloud payment amounts, one budget amount, and two subscription amounts (all now "$[redacted]"), and the user's first name (now "[name]", also inside the code block; the file on disk keeps the real name). A build script did the replacement and refused to write the page if any original string survived. The files on disk under <code>.ignore/</code> are unredacted, untracked, and listed in <code>.gitignore</code>. The Jev numbers are unchanged. Jev saw the unredacted text.
 </div>
 
 <nav><ol>
@@ -143,22 +143,22 @@
 <pre><code>const QUESTIONS = {
   category: {
     type: "choice",
-    instructions: "What kind of email is this, received by Simon?",
+    instructions: "What kind of email is this, received by [name]?",
     criteria: {
-      security_alert: "An account security or sign-in notice from a service Simon uses",
+      security_alert: "An account security or sign-in notice from a service [name] uses",
       receipt: "A payment receipt, invoice, or billing notice",
-      service_notice: "A product, policy, or terms change from a service Simon uses",
+      service_notice: "A product, policy, or terms change from a service [name] uses",
       newsletter: "A digest, marketing, or promotional mailing",
-      personal_reminder: "A reminder or task sent by Simon or a family member to Simon",
-      business_inquiry: "A person or company asking Simon for work, a contract, or a deal",
+      personal_reminder: "A reminder or task sent by [name] or a family member to [name]",
+      business_inquiry: "A person or company asking [name] for work, a contract, or a deal",
       other: "None of the above",
     },
   },
   importance: {
     type: "score",
-    instructions: "How important is it that Simon personally reads this email?",
+    instructions: "How important is it that [name] personally reads this email?",
     criteria: [
-      "ignore: no action and no information Simon needs",
+      "ignore: no action and no information [name] needs",
       "low: informational only; fine to skim later",
       "medium: worth reading this week",
       "high: needs an action or a reply within a few days",
@@ -166,7 +166,7 @@
       "insane: needs a response within 30 minutes or bad things happen",
     ],
   },
-  brand_deal: { type: "boolean", instructions: "Does this email mention a sponsorship or brand deal opportunity for Simon?" },
+  brand_deal: { type: "boolean", instructions: "Does this email mention a sponsorship or brand deal opportunity for [name]?" },
   scam: { type: "boolean", instructions: "Does this email look like a scam, phishing, or something untrustworthy?" },
 };</code></pre>
 <p>The state for one email is an object with four keys:</p>
@@ -182,7 +182,7 @@
 <ul>
   <li>The question ids <code>category</code>, <code>importance</code>, <code>brand_deal</code>, <code>scam</code>. The docs say the model never sees the id.</li>
   <li>Today's date. Jev received <code>date: "2026-07-15"</code> on a row and had no "today" to subtract from it. Section 7 shows what that did.</li>
-  <li>Who the user is. The instruction names "Simon". The state names senders. Nothing tells Jev that <code>you@yahoo</code> and <code>you@hotmail</code> are the user's own addresses.</li>
+  <li>Who the user is. The instruction names "[name]". The state names senders. Nothing tells Jev that <code>you@yahoo</code> and <code>you@hotmail</code> are the user's own addresses.</li>
   <li>The email body. Only Gmail's snippet, about 100 to 230 characters.</li>
   <li>The other 40 emails. Each call is independent. Jev cannot see that the same "Security alert" arrived four times in one thread.</li>
 </ul>
@@ -202,22 +202,22 @@ const JEV = "typesafe-ai/jev";
 const QUESTIONS = {
   category: {
     type: "choice",
-    instructions: "What kind of email is this, received by Simon?",
+    instructions: "What kind of email is this, received by [name]?",
     criteria: {
-      security_alert: "An account security or sign-in notice from a service Simon uses",
+      security_alert: "An account security or sign-in notice from a service [name] uses",
       receipt: "A payment receipt, invoice, or billing notice",
-      service_notice: "A product, policy, or terms change from a service Simon uses",
+      service_notice: "A product, policy, or terms change from a service [name] uses",
       newsletter: "A digest, marketing, or promotional mailing",
-      personal_reminder: "A reminder or task sent by Simon or a family member to Simon",
-      business_inquiry: "A person or company asking Simon for work, a contract, or a deal",
+      personal_reminder: "A reminder or task sent by [name] or a family member to [name]",
+      business_inquiry: "A person or company asking [name] for work, a contract, or a deal",
       other: "None of the above",
     },
   },
   importance: {
     type: "score",
-    instructions: "How important is it that Simon personally reads this email?",
+    instructions: "How important is it that [name] personally reads this email?",
     criteria: [
-      "ignore: no action and no information Simon needs",
+      "ignore: no action and no information [name] needs",
       "low: informational only; fine to skim later",
       "medium: worth reading this week",
       "high: needs an action or a reply within a few days",
@@ -225,7 +225,7 @@ const QUESTIONS = {
       "insane: needs a response within 30 minutes or bad things happen",
     ],
   },
-  brand_deal: { type: "boolean", instructions: "Does this email mention a sponsorship or brand deal opportunity for Simon?" },
+  brand_deal: { type: "boolean", instructions: "Does this email mention a sponsorship or brand deal opportunity for [name]?" },
   scam: { type: "boolean", instructions: "Does this email look like a scam, phishing, or something untrustworthy?" },
 };
 
@@ -294,17 +294,17 @@ for (const r of [...out].sort((x, y) =&gt; y.importance - x.importance))
 {"id":"1a059e2ac0da8483","date":"2026-08-31","from":"no-reply@accounts.google.com","subject":"Security alert","snippet":"You allowed Activepieces access to some of your Google Account data. If you didn't allow Activepieces access to some of your Google Account data, someone else may be trying to access your account."},
 {"id":"1a03aeb2c5cd918e","date":"2026-08-25","from":"googledevelopers-noreply@google.com","subject":"[Action Advised] Manage your unused OAuth clients and protect your information","snippet":"Your projects have inactive OAuth clients that are subject to automatic deletion. Hello Google Developer, In accordance with OAuth 2.0 Policies, the following projects that you manage have OAuth clients that have been inactive."},
 {"id":"1a03661ef374ec59","date":"2026-08-25","from":"googleplay-noreply@google.com","subject":"Your Google Play Order Receipt from Aug 24, 2026","snippet":"Google Play. Thank you. Your subscription from Google LLC on Google Play continues and you've been charged. Manage your subscriptions. Order date: Aug 24."},
-{"id":"1a02142922347f47","date":"2026-08-20","from":"contact@alphaxiv.org","subject":"Introducing Researchers To Follow","snippet":"alphaXiv Weekly digest. Hi Simon, We're rolling out personalized recommendations across alphaXiv. Your weekly emails will now feature papers and researchers tailored to your interests."},
+{"id":"1a02142922347f47","date":"2026-08-20","from":"contact@alphaxiv.org","subject":"Introducing Researchers To Follow","snippet":"alphaXiv Weekly digest. Hi [name], We're rolling out personalized recommendations across alphaXiv. Your weekly emails will now feature papers and researchers tailored to your interests."},
 {"id":"1a01594b5dc46a58","date":"2026-08-18","from":"noreply-accounts@google.com","subject":"You shared some Google Account data with DocuSign Demo","snippet":"Keep track of your Google Account data. You're receiving this email because you used Sign in with Google to sign in to DocuSign Demo on August 18 at 8:54 AM."},
 {"id":"1a012a74ec1759c1","date":"2026-08-18","from":"alerts@notify.bank.example","subject":"Bank Change to Your Delivery Preference","snippet":"Bank. Your delivery preferences have changed. Your delivery preference(s) for how you will receive your documents were updated for one or more of your brokerage accounts."},
 {"id":"19ffc4a0277a14a6","date":"2026-08-13","from":"payments-noreply@google.com","subject":"Google: We've received your payment for [redacted]","snippet":"Google Cloud Platform &amp; APIs. Payment received. Your payment amount of $[redacted] to Google was received on Aug 13, 2026. Payment for: Google Cloud. Payment method: Visa."},
-{"id":"19ff8254ca7ac6a1","date":"2026-08-12","from":"googleaistudio-noreply@google.com","subject":"[Action Required] Update your Gemini API billing in Google AI Studio by Oct 12, 2026","snippet":"Google AI Studio is transitioning from Postpay to Prepay billing for Gemini API usage. Hello Simon, We are writing to inform you of an upcoming billing change to Google AI Studio and the Gemini API."},
+{"id":"19ff8254ca7ac6a1","date":"2026-08-12","from":"googleaistudio-noreply@google.com","subject":"[Action Required] Update your Gemini API billing in Google AI Studio by Oct 12, 2026","snippet":"Google AI Studio is transitioning from Postpay to Prepay billing for Gemini API usage. Hello [name], We are writing to inform you of an upcoming billing change to Google AI Studio and the Gemini API."},
 {"id":"19ff7d076c364e5a","date":"2026-08-12","from":"googleaistudio-noreply@google.com","subject":"Upgrade your Gemini 2.5 Flash workloads","snippet":"Get higher intelligence and better throughput with Gemini 3.5 Flash-Lite."},
 {"id":"19ff2360c1938b3e","date":"2026-08-11","from":"no-reply@accounts.google.com","subject":"Security alert","snippet":"You allowed Cursor access to some of your Google Account data. If you didn't allow Cursor access to some of your Google Account data, someone else may be trying to access your account."},
 {"id":"19ff23663fb3e5ab","date":"2026-08-11","from":"no-reply@accounts.google.com","subject":"Security alert","snippet":"You allowed Cursor access to some of your Google Account data. If you didn't allow Cursor access to some of your Google Account data, someone else may be trying to access your account."},
 {"id":"19ff2369dd071170","date":"2026-08-11","from":"no-reply@accounts.google.com","subject":"Security alert","snippet":"You allowed Cursor access to some of your Google Account data. If you didn't allow Cursor access to some of your Google Account data, someone else may be trying to access your account."},
 {"id":"19ff170e3538fc02","date":"2026-08-11","from":"portraits-noreply@google.com","subject":"Portraits is shutting down on September 14, 2026","snippet":"Hi, We're writing to let you know that we will be turning down Portraits on September 14, 2026. Our goal in Labs is to test new ideas and get your feedback on experimental AI; thank you so much for participating."},
-{"id":"19fe0568e97bad68","date":"2026-08-08","from":"CloudPlatform-noreply@google.com","subject":"50% of budget reached","snippet":"Google Cloud. Billing Budget Alert. 50% of budget reached. Billing account: My Billing Account. Aug 8, 2026. Budget Amount $8.50. Budget Period Aug 1, 2026 - Aug 31, 2026."},
+{"id":"19fe0568e97bad68","date":"2026-08-08","from":"CloudPlatform-noreply@google.com","subject":"50% of budget reached","snippet":"Google Cloud. Billing Budget Alert. 50% of budget reached. Billing account: My Billing Account. Aug 8, 2026. Budget Amount $[redacted]. Budget Period Aug 1, 2026 - Aug 31, 2026."},
 {"id":"19fd77b5b731bc69","date":"2026-08-06","from":"no-reply@accounts.google.com","subject":"Security alert","snippet":"You allowed Zapier access to some of your Google Account data. If you didn't allow Zapier access to some of your Google Account data, someone else may be trying to access your account."},
 {"id":"19fd78662684bf00","date":"2026-08-06","from":"no-reply@accounts.google.com","subject":"Security alert","snippet":"You allowed Zapier access to some of your Google Account data. If you didn't allow Zapier access to some of your Google Account data, someone else may be trying to access your account."},
 {"id":"19fbe7509db41cd0","date":"2026-08-01","from":"payments-noreply@google.com","subject":"Google: We've received your payment for [redacted]","snippet":"Google Cloud Platform &amp; APIs. Payment received. Your payment amount of $[redacted] to Google was received on Aug 1, 2026. Payment for: Google Cloud. Payment method: Visa."},
@@ -317,7 +317,7 @@ for (const r of [...out].sort((x, y) =&gt; y.importance - x.importance))
 {"id":"19f675333f10c928","date":"2026-07-15","from":"googledevelopers-noreply@google.com","subject":"[Action Advised] Manage your unused OAuth clients and protect your information","snippet":"Your projects have inactive OAuth clients that are subject to automatic deletion. Hello Google Developer, In accordance with OAuth 2.0 Policies, the following projects that you manage have OAuth clients that have been inactive."},
 {"id":"19f66180662d15f9","date":"2026-07-15","from":"you@yahoo","subject":"call [redacted]","snippet":"please reply if you receive this reminder: you are many months behind contacting [redacted]. act on it"},
 {"id":"19f661703593e7db","date":"2026-07-15","from":"you@yahoo","subject":"check tire","snippet":"Please reply if you receive this reminder: You need to check tire pressure by this Sat. 7/18/2026"},
-{"id":"19f661609cded48f","date":"2026-07-15","from":"you@hotmail","subject":"AI subscriptions","snippet":"Here is a reminder to cancel ElevenLabs subscription in 7 days. You should revert Anthropic subscription to $100 from $200. You may want to bump up OpenAI to $100"},
+{"id":"19f661609cded48f","date":"2026-07-15","from":"you@hotmail","subject":"AI subscriptions","snippet":"Here is a reminder to cancel ElevenLabs subscription in 7 days. You should revert Anthropic subscription to $[redacted] from $[redacted]. You may want to bump up OpenAI to $[redacted]"},
 {"id":"19f66141392887bc","date":"2026-07-15","from":"you@hotmail","subject":"Library book due","snippet":"I want to remind you that \"Big Book of Sherlock Holmes\" will be due in 24 hours. Please renew or return the book"},
 {"id":"19f1f0332f4712c6","date":"2026-07-01","from":"payments-noreply@google.com","subject":"Google: We've received your payment for [redacted]","snippet":"Google Cloud Platform &amp; APIs. Payment received. Your payment amount of $[redacted] to Google was received on Jul 1, 2026. Payment for: Google Cloud. Payment method: Visa."},
 {"id":"19f0565c95cd1660","date":"2026-06-26","from":"google-noreply@google.com","subject":"Learn more about our updated Terms of Service","snippet":"Every couple of years, we update our Terms of Service. We wanted to let you know ahead of time that the next update will be on July 30, 2026. These changes won't affect the way you use our services."},
@@ -968,7 +968,7 @@ for (const r of [...out].sort((x, y) =&gt; y.importance - x.importance))
   <tr><td>One search page is the inbox.</td><td><code>pageSize</code> max is 50 threads. This inbox fit in one page. A busier one does not.</td><td>Loop on <code>nextPageToken</code> until it is absent.</td></tr>
   <tr><td>The state is the snippet.</td><td>The state is an object. Its key names are input. <code>from</code>, <code>subject</code>, <code>date</code>, <code>snippet</code> all shape the answer.</td><td>Name keys the way a person would label the fields. Keep the same keys between runs, or numbers drift.</td></tr>
   <tr><td>A Choice can abstain.</td><td>It always picks one. <code>other</code> caught one row here. Without it, the self-sent summary would have been forced into a wrong bucket.</td><td>Keep an <code>other</code> option. Watch its count; a large count means your list is wrong.</td></tr>
-  <tr><td>Jev saw your name in the criteria and knows you.</td><td>"Simon" in the instructions is a word. It links to nothing in the state.</td><td>Names in instructions do no harm and no work. The state must carry the identity signal.</td></tr>
+  <tr><td>Jev saw your name in the criteria and knows you.</td><td>"[name]" in the instructions is a word. It links to nothing in the state.</td><td>Names in instructions do no harm and no work. The state must carry the identity signal.</td></tr>
   <tr><td>The JSON in the repo is the data.</td><td>The data files are under <code>.ignore/</code>, listed in <code>.gitignore</code>, and unredacted. This page holds a redacted copy. Only the redacted copy is public.</td><td>Keep inbox data out of the tree. Check <code>git status</code> before every push.</td></tr>
   <tr><td><code>cost: "0"</code> means free.</td><td>On a paid account the gateway still printed <code>cost: "0"</code> next to <code>marketCost: "0.000029778"</code>. The reason is not in any page read.</td><td>Bill by <code>marketCost</code> until the credits endpoint or the pricing page says otherwise.</td></tr>
   <tr><td>Jev ran over the inbox in real time.</td><td>It ran over a file typed by the agent from one tool result, later in the same session. New mail after the fetch is not in it.</td><td>Refetch before every run. Treat the JSON as a snapshot with a date.</td></tr>
