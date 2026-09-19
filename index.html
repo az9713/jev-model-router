@@ -51,9 +51,9 @@ f.onsubmit = async e => {
     const r = await (await fetch("/chat", { method: "POST", body: JSON.stringify({ message }) })).json();
     if (r.error) throw new Error(r.error);
     const bars = Object.entries(r.probabilities).map(([k, p]) =>
-      `<span>${k}</span><div class="bar"><i style="width:${Math.round(p*100)}%"></i></div><span>${Math.round(p*100)}%</span>`).join("");
+      `<span>${esc(String(k))}</span><div class="bar"><i style="width:${Math.round(p*100)}%"></i></div><span>${Math.round(p*100)}%</span>`).join("");
     el.innerHTML = `<div class="q">${esc(message)}</div>
-      <div class="meta"><span class="tier">${r.tier}</span><span>${r.model}</span><span>confidence ${r.confidence}</span><span>Jev ${r.jevMs} ms</span><span>reply ${r.replyMs} ms</span></div>
+      <div class="meta"><span class="tier">${esc(String(r.tier))}</span><span>${esc(String(r.model))}</span><span>confidence ${Number(r.confidence)}</span><span>Jev ${Number(r.jevMs)} ms</span><span>reply ${Number(r.replyMs)} ms</span></div>
       <div class="bars">${bars}</div><div class="reply">${r.replyError ? `<span class="err">${esc(r.model)} refused: ${esc(r.replyError)}</span>` : esc(r.reply)}</div>`;
     m.value = "";
   } catch (err) { el.querySelector(".meta").innerHTML = `<span class="err">${esc(err.message)}</span>`; }
