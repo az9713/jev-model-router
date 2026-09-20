@@ -1,0 +1,15 @@
+[
+  { "id": "greeting", "message": "Hello, good morning.", "expected": "nano" },
+  { "id": "thanks", "message": "Thanks for your help.", "expected": "nano" },
+  { "id": "capital", "message": "What is the capital of France?", "expected": "nano" },
+  { "id": "unit-conversion", "message": "Convert 12 inches to centimeters.", "expected": "nano" },
+  { "id": "short-definition", "message": "Define idempotency in one sentence.", "expected": "nano" },
+  { "id": "explain-index", "message": "Explain when a database index helps and when it hurts.", "expected": "balanced" },
+  { "id": "debug-race", "message": "Debug an intermittent race condition in this worker pool and propose a focused test.", "expected": "balanced" },
+  { "id": "implement-endpoint", "message": "Implement a small authenticated REST endpoint with validation and tests.", "expected": "balanced" },
+  { "id": "migration-plan", "message": "Plan a zero-downtime migration from integer IDs to UUIDs.", "expected": "balanced" },
+  { "id": "rewrite-note", "message": "Rewrite this short project update so it is clearer and more concise.", "expected": "fast" },
+  { "id": "production-system", "message": "Design a complete production payment system with threat model, ledger invariants, migration plan, observability, and disaster recovery.", "expected": "frontier" },
+  { "id": "hard-math", "message": "Prove this hard theorem rigorously, check every assumption, and provide an independent verification strategy.", "expected": "frontier" },
+  { "id": "high-stakes-architecture", "message": "Review the high-stakes architecture of a medical device control system where a wrong answer could injure a patient.", "expected": "frontier" }
+]

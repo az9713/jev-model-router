@@ -37,9 +37,11 @@ Needs Node 20.6 or later and a Vercel AI Gateway key on the paid tier. The free 
 ```
 npm install
 echo AI_GATEWAY_API_KEY=your_key > .env
-node --env-file=.env server.mjs --check   # three test prompts
+node server.mjs --check                  # free offline server check
 node --env-file=.env server.mjs           # http://localhost:3000
 ```
+
+`npm test` runs offline checks and the held-out routing cases without spending API credits. `npm run eval:live` evaluates the same cases with Jev and writes one JSON object per case to `eval/results-live.jsonl`; it does not call any reply model. For the browser flow, start `node server.mjs --offline`, then run `python tests/browser.py` in another terminal.
 
 `probe.mjs` sends one raw Jev call and prints the full response body.
 
