@@ -5,6 +5,7 @@ A small web chat where [Jev](https://docs.typesafe.ai/introduction), TypeSafe's 
 Inspired by Riley Brown's video [*Jev: the model that can't write*](https://www.youtube.com/watch?v=o1CogAtWdBk), where he builds the same router in one prompt. This repo is that idea, built and documented step by step with Claude Code.
 
 - **Development journey:** https://az9713.github.io/jev-model-router/ — how Jev is reached through the gateway, how the router uses it, where the probabilities come from, what went wrong, and 18 unknown unknowns.
+- **Reliability upgrade:** https://az9713.github.io/jev-model-router/reliability-upgrade.html — what changed, why it changed, how it works, and the new evaluation and browser evidence.
 - **Email triage journey:** https://az9713.github.io/jev-email-triage/ — in its own repo, [az9713/jev-email-triage](https://github.com/az9713/jev-email-triage). `triage.mjs` over 90 days of a real inbox: how the mail was fetched, the four questions, every input and output file (redacted), four mis-ranks and their causes, and 17 unknown unknowns.
 - **Frozen demo:** https://az9713.github.io/jev-model-router/demo.html — a saved copy of the page after three messages.
 
